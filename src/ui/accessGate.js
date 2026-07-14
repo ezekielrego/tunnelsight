@@ -1,20 +1,20 @@
 const INTRO_STORAGE_KEY = 'tunnelsight:guest-intro-accepted'
-const DESKTOP_MIN_WIDTH = 960
+const DESKTOP_MIN_WIDTH = 800
 
 function hasMobileUserAgent() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent)
 }
 
-function hasCoarsePrimaryPointer() {
-  return window.matchMedia?.('(pointer: coarse)').matches ?? false
+function hasTabletDesktopUserAgent() {
+  return window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1
 }
 
 function isSmallViewport() {
-  return Math.min(window.innerWidth, window.innerHeight) < 640 || window.innerWidth < DESKTOP_MIN_WIDTH
+  return window.innerWidth < DESKTOP_MIN_WIDTH || window.innerHeight < 520
 }
 
 export function isDesktopWorkspaceDevice() {
-  return !hasMobileUserAgent() && !hasCoarsePrimaryPointer() && !isSmallViewport()
+  return !hasMobileUserAgent() && !hasTabletDesktopUserAgent() && !isSmallViewport()
 }
 
 export function createAccessGate({ dom, onDesktopApproved }) {
