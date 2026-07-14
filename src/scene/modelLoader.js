@@ -12,9 +12,15 @@ export function createModelLoader({
   setModelLoadProgress,
 }) {
   let currentModelAsset = null
+  let currentObjectUrl = null
   let modelLoadAttempt = 0
 
   function removeCurrentModelAsset() {
+    if (currentObjectUrl) {
+      URL.revokeObjectURL(currentObjectUrl)
+      currentObjectUrl = null
+    }
+
     if (!currentModelAsset) {
       return
     }
@@ -27,23 +33,26 @@ export function createModelLoader({
     currentModelAsset = null
   }
 
-  function loadPrimaryModel() {
+  function loadModelFromUrl({ url, filename = 'model.glb', label = filename, objectUrl = false }) {
     modelLoadAttempt += 1
     const attempt = modelLoadAttempt
 
     clearModelRoot()
     markerManager.clearMarkerLabels(measurementTool.clearMeasurements)
     removeCurrentModelAsset()
+    if (objectUrl) {
+      currentObjectUrl = url
+    }
     setAppState({
       modelLoadState: 'loading',
       modelLoadProgress: 0,
-      modelLoadMessage: `Loading ${MODEL_URL}`,
+      modelLoadMessage: `Loading ${label}`,
       actionStatus: 'Loading model',
     })
 
-    const asset = new pc.Asset('positanos_tunnel', 'container', {
-      url: MODEL_URL,
-      filename: MODEL_FILENAME,
+    const asset = new pc.Asset(label.replace(/[^a-zA-Z0-9_.-]/g, '-'), 'container', {
+      url,
+      filename,
     })
 
     currentModelAsset = asset
@@ -69,7 +78,7 @@ export function createModelLoader({
       setAppState({
         modelLoadState: 'ready',
         modelLoadProgress: 100,
-        modelLoadMessage: `Loaded ${MODEL_URL}`,
+        modelLoadMessage: `Loaded ${label}`,
         actionStatus: 'Model ready',
       })
     })
@@ -80,16 +89,24 @@ export function createModelLoader({
       }
 
       console.error('Failed to load GLB:', err)
-      setAppState({
-        modelLoadState: 'error',
-        modelLoadProgress: 0,
-        modelLoadMessage: `Could not load ${MODEL_URL}. Retry the model or use the fallback scene.`,
-        actionStatus: 'Model load failed',
-      })
+    setAppState({
+      modelLoadState: 'error',
+      modelLoadProgress: 0,
+      modelLoadMessage: `Could not load ${label}. Retry the model or use the fallback scene.`,
+      actionStatus: 'Model load failed',
+    })
     })
 
     app.assets.add(asset)
     app.assets.load(asset)
+  }
+
+  function loadPrimaryModel() {
+    loadModelFromUrl({
+      url: MODEL_URL,
+      filename: MODEL_FILENAME,
+      label: 'Positanos Tunnel',
+    })
   }
 
   function invalidateModelLoad() {
@@ -98,6 +115,7 @@ export function createModelLoader({
 
   return {
     loadPrimaryModel,
+    loadModelFromUrl,
     removeCurrentModelAsset,
     invalidateModelLoad,
   }

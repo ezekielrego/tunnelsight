@@ -35,5 +35,16 @@ export function getDomRefs() {
     guestOnboardingEl: byId('guestOnboarding'),
     rememberGuestIntroInput: byId('rememberGuestIntro'),
     continueAsGuestButton: byId('continueAsGuest'),
+    fileManagerPanel: byId('fileManagerPanel'),
+    closeFileManagerButton: byId('closeFileManager'),
+    workspaceFileInput: byId('workspaceFileInput'),
+    workspaceQuotaText: byId('workspaceQuotaText'),
+    workspaceQuotaBar: byId('workspaceQuotaBar'),
+    modelLinkInput: byId('modelLinkInput'),
+    loadModelLinkButton: byId('loadModelLink'),
+    googleDriveInput: byId('googleDriveInput'),
+    loadGoogleDriveLinkButton: byId('loadGoogleDriveLink'),
+    defaultModelList: byId('defaultModelList'),
+    savedModelList: byId('savedModelList'),
   }
 }

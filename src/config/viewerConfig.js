@@ -2,6 +2,28 @@ import * as pc from 'playcanvas'
 
 export const MODEL_URL = '/models/positanos_tunnel.glb'
 export const MODEL_FILENAME = 'positanos_tunnel.glb'
+export const WORKSPACE_QUOTA_BYTES = 512 * 1024 * 1024
+
+export const DEFAULT_MODELS = [
+  {
+    id: 'positanos',
+    name: 'Positanos Tunnel',
+    url: '/models/positanos_tunnel.glb',
+    filename: 'positanos_tunnel.glb',
+  },
+  {
+    id: 'sample',
+    name: 'Sample Tunnel',
+    url: '/models/sample-tunnel.glb',
+    filename: 'sample-tunnel.glb',
+  },
+  {
+    id: 'tunnel',
+    name: 'Tunnel Model',
+    url: '/models/tunnel.glb',
+    filename: 'tunnel.glb',
+  },
+]
 
 export const INSPECTION_POINTS = [
   {

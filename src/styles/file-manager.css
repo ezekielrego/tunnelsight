@@ -1,0 +1,178 @@
+.file-manager-panel {
+  position: absolute;
+  top: 88px;
+  left: 108px;
+  width: min(760px, calc(100vw - 140px));
+  max-height: calc(100vh - 142px);
+  overflow: auto;
+  pointer-events: auto;
+  border-radius: 8px;
+}
+
+.file-manager-panel[hidden] {
+  display: none;
+}
+
+.file-manager-header,
+.file-manager-quota {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.file-manager-header h2 {
+  margin: 2px 0 0;
+  font-size: 1rem;
+}
+
+.file-manager-quota {
+  align-items: stretch;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.file-manager-quota strong,
+.file-manager-quota span {
+  display: block;
+}
+
+.file-manager-quota span {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.quota-bar {
+  align-self: center;
+  width: min(260px, 40%);
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.quota-bar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-orange));
+}
+
+.file-manager-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+.file-source {
+  min-height: 150px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.file-source h3 {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+}
+
+.file-source p {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.file-upload-target {
+  display: grid;
+  min-height: 72px;
+  place-items: center;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.file-upload-target input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.file-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.file-action-button,
+.file-row button {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.file-list {
+  display: grid;
+  gap: 8px;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 46px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.file-row span,
+.file-row small {
+  display: block;
+}
+
+.file-row small,
+.empty-file-state {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.file-row-actions {
+  display: flex;
+  gap: 6px;
+}
+
+@media (max-width: 920px) {
+  .file-manager-panel {
+    left: 14px;
+    right: 14px;
+    width: auto;
+  }
+
+  .file-manager-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .file-input-row,
+  .file-manager-quota {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .quota-bar {
+    width: 100%;
+  }
+}

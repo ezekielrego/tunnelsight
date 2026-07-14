@@ -23,6 +23,10 @@
   border-radius: 10px;
 }
 
+.onboarding-card {
+  border-radius: 0;
+}
+
 .access-kicker {
   display: inline-flex;
   min-height: 28px;
@@ -65,6 +69,10 @@
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.035);
+}
+
+.onboarding-grid article {
+  border-radius: 0;
 }
 
 .access-list strong,

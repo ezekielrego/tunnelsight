@@ -9,6 +9,7 @@ import { createMarkerManager } from '../tools/markerManager.js'
 import { createMeasurementTool } from '../tools/measurementTool.js'
 import { createSelectionBox } from '../tools/selectionBox.js'
 import { downloadScreenshot } from '../tools/screenshot.js'
+import { createFileManager } from '../ui/fileManager.js'
 import { createViewState } from '../ui/viewState.js'
 
 function clearModelRoot(modelRoot) {
@@ -82,6 +83,13 @@ export function createTunnelSightApp(dom) {
     setModelLoadProgress,
   })
 
+  const fileManager = createFileManager({
+    dom,
+    modelLoader,
+    setActionStatus,
+    clearPanel,
+  })
+
   function focusModel() {
     if (modelRoot.children.length) {
       frameEntity(modelRoot, true)
@@ -141,6 +149,9 @@ export function createTunnelSightApp(dom) {
         break
       case 'capture-screenshot':
         downloadScreenshot({ canvas: dom.canvas, setAppState })
+        break
+      case 'open-file-manager':
+        fileManager.open()
         break
       case 'toggle-layout':
         setAppState({
@@ -256,6 +267,7 @@ export function createTunnelSightApp(dom) {
 
     document.querySelectorAll('[data-ui-panel]').forEach((button) => {
       button.addEventListener('click', () => {
+        fileManager.close()
         showPanel(button.dataset.uiPanel)
       })
     })

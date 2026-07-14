@@ -3,5 +3,6 @@
 @import './styles/viewport-overlays.css';
 @import './styles/workspace-layout.css';
 @import './styles/panels.css';
+@import './styles/file-manager.css';
 @import './styles/toolbars-status.css';
 @import './styles/responsive.css';
