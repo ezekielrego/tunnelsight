@@ -1,6 +1,12 @@
-# AI4I Track 3 Submission Pack
+# TunnelSight AI Submission Documents
 
-This folder contains the proposal and supporting appendices for the GAMIS / TunnelSight Development Track submission.
+This folder contains the working source documents used to generate the formal POTRAZ package.
+
+Formal package folder:
+
+```text
+docs/POTRAZ/
+```
 
 ## Main Files
 
@@ -12,32 +18,5 @@ This folder contains the proposal and supporting appendices for the GAMIS / Tunn
 | `DATASET_STATEMENT.md` | Dataset register and data readiness statement |
 | `ASSET_LICENSE_REGISTER.md` | Asset, dependency and licence/status register |
 | `CONSENT_AND_SAFETY_NOTE.md` | Consent wording, safety disclaimer and compliance controls |
-| `DEMO_SCRIPT.md` | Short screen-recording script for prototype evidence |
-| `SUBMISSION_CHECKLIST.md` | Final package checklist |
 
-## Before Exporting the PDF
-
-Replace these placeholders:
-
-- `[Insert Project ID]`
-- Add `[Demo video URL]` manually after recording the demo, if the portal or final PDF needs it.
-
-## PDF Export
-
-The required filename format is:
-
-```text
-[ProjectID]_AI4I_Proposal_Development.pdf
-```
-
-Use the printable HTML file for export:
-
-```text
-docs/submission/PROJECTID_AI4I_Proposal_Development_PRINT.html
-```
-
-Open it in a browser, print to PDF, then rename the output using the official Project ID.
-
-## Submission Position
-
-The proposal intentionally states that the product is an early prototype. It claims the working viewer, marker, measurement, selection and screenshot workflow, while presenting automated reconstruction, hazard detection and recommendation logic as the next MVP work. Keep that honesty in the final submission.
+The POTRAZ folder contains the clean `.docx` package for sharing and submission.
