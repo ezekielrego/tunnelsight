@@ -103,6 +103,64 @@
     </svg>
     <canvas id="application"></canvas>
 
+    <section id="deviceGate" class="access-gate access-gate-mobile" aria-live="polite" hidden>
+      <div class="access-card glass-panel">
+        <span class="access-kicker">Desktop workspace required</span>
+        <h1>Please open TunnelSight on a desktop or laptop</h1>
+        <p>
+          TunnelSight uses a detailed 3D inspection workspace with precise mouse, keyboard and large-screen controls.
+          For the best and safest experience, mobile and tablet access is paused for now.
+        </p>
+        <div class="access-list">
+          <div>
+            <strong>Recommended</strong>
+            <span>Desktop or laptop browser</span>
+          </div>
+          <div>
+            <strong>Input</strong>
+            <span>Mouse or trackpad for 3D navigation</span>
+          </div>
+          <div>
+            <strong>Display</strong>
+            <span>Wide screen for panels, tools and measurements</span>
+          </div>
+        </div>
+        <p class="access-note">Thank you for understanding. Please continue from a desktop device.</p>
+      </div>
+    </section>
+
+    <section id="guestOnboarding" class="access-gate access-gate-onboarding" aria-labelledby="guestOnboardingTitle" hidden>
+      <div class="access-card onboarding-card glass-panel">
+        <span class="access-kicker">Guest viewing mode</span>
+        <h1 id="guestOnboardingTitle">Welcome to TunnelSight AI</h1>
+        <p>
+          You are viewing this workspace as a guest. Some actions are available for demonstration,
+          while protected project features are limited until a full account or project role is assigned.
+        </p>
+        <div class="onboarding-grid">
+          <article>
+            <strong>What you can do</strong>
+            <span>Navigate the 3D scene, inspect risk markers, select zones, measure points and capture screenshots.</span>
+          </article>
+          <article>
+            <strong>Guest limits</strong>
+            <span>Saving projects, importing private scans, collaboration and permanent data storage are restricted.</span>
+          </article>
+          <article>
+            <strong>Quick guide</strong>
+            <span>Use the mouse to orbit, the scroll wheel to zoom, and the side or bottom tools to switch modes.</span>
+          </article>
+        </div>
+        <div class="onboarding-actions">
+          <label class="remember-row">
+            <input id="rememberGuestIntro" type="checkbox" />
+            <span>Do not show this introduction again on this browser</span>
+          </label>
+          <button id="continueAsGuest" class="primary-access-button" type="button">Continue as guest</button>
+        </div>
+      </div>
+    </section>
+
     <div id="app-shell">
       <div id="label-layer"></div>
 

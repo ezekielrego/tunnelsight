@@ -1,4 +1,5 @@
 @import './styles/base.css';
+@import './styles/access-gate.css';
 @import './styles/viewport-overlays.css';
 @import './styles/workspace-layout.css';
 @import './styles/panels.css';

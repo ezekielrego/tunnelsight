@@ -31,5 +31,9 @@ export function getDomRefs() {
     actionOrbitResetButton: byId('actionOrbitReset'),
     actionLoadFallbackButton: byId('actionLoadFallback'),
     actionFitViewButton: byId('actionFitView'),
+    deviceGateEl: byId('deviceGate'),
+    guestOnboardingEl: byId('guestOnboarding'),
+    rememberGuestIntroInput: byId('rememberGuestIntro'),
+    continueAsGuestButton: byId('continueAsGuest'),
   }
 }
