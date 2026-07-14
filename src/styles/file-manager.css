@@ -2,11 +2,13 @@
   position: absolute;
   top: 88px;
   left: 108px;
+  z-index: 42;
   width: min(760px, calc(100vw - 140px));
-  max-height: calc(100vh - 142px);
+  max-height: calc(100vh - 118px);
   overflow: auto;
   pointer-events: auto;
   border-radius: 8px;
+  box-shadow: 0 30px 120px rgba(0, 0, 0, 0.62), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .file-manager-panel[hidden] {
@@ -76,8 +78,73 @@
 }
 
 .file-source h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0 0 8px;
   font-size: 0.9rem;
+}
+
+.file-source-local {
+  border-color: rgba(77, 163, 255, 0.22);
+}
+
+.file-source-link {
+  border-color: rgba(34, 197, 94, 0.22);
+}
+
+.file-source-defaults {
+  border-color: rgba(245, 158, 11, 0.24);
+}
+
+.file-source-saved {
+  border-color: rgba(168, 85, 247, 0.24);
+}
+
+.source-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-main);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.source-icon-local,
+.file-row-local .source-icon {
+  background: rgba(77, 163, 255, 0.14);
+  border-color: rgba(77, 163, 255, 0.42);
+  color: #bfdbfe;
+}
+
+.source-icon-link,
+.file-row-link .source-icon {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.42);
+  color: #bbf7d0;
+}
+
+.source-icon-defaults,
+.file-row-default .source-icon {
+  background: rgba(245, 158, 11, 0.13);
+  border-color: rgba(245, 158, 11, 0.42);
+  color: #fde68a;
+}
+
+.source-icon-saved {
+  background: rgba(168, 85, 247, 0.14);
+  border-color: rgba(168, 85, 247, 0.42);
+  color: #e9d5ff;
+}
+
+.file-row-drive .source-icon {
+  background:
+    linear-gradient(135deg, rgba(66, 133, 244, 0.26), rgba(15, 157, 88, 0.22), rgba(251, 188, 5, 0.22));
+  border-color: rgba(66, 133, 244, 0.5);
 }
 
 .file-source p {
@@ -91,10 +158,22 @@
   display: grid;
   min-height: 72px;
   place-items: center;
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.025);
+  border: 1px dashed rgba(77, 163, 255, 0.34);
+  background: rgba(77, 163, 255, 0.04);
   color: var(--text-main);
   cursor: pointer;
+}
+
+.file-upload-target span,
+.file-upload-target small {
+  display: block;
+  text-align: center;
+}
+
+.file-upload-target small {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
 }
 
 .file-upload-target input {
@@ -123,6 +202,19 @@
   cursor: pointer;
 }
 
+.file-action-link {
+  border-color: rgba(34, 197, 94, 0.38);
+  background: rgba(34, 197, 94, 0.08);
+  color: #bbf7d0;
+}
+
+.file-action-drive {
+  border-color: rgba(66, 133, 244, 0.5);
+  background:
+    linear-gradient(135deg, rgba(66, 133, 244, 0.14), rgba(15, 157, 88, 0.1), rgba(251, 188, 5, 0.1));
+  color: #bfdbfe;
+}
+
 .file-list {
   display: grid;
   gap: 8px;
@@ -139,6 +231,40 @@
   background: rgba(255, 255, 255, 0.03);
 }
 
+.file-row-main {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.file-row-main > span:last-child {
+  min-width: 0;
+}
+
+.file-row-main strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 260px;
+}
+
+.file-row-local {
+  border-color: rgba(77, 163, 255, 0.16);
+}
+
+.file-row-link {
+  border-color: rgba(34, 197, 94, 0.16);
+}
+
+.file-row-drive {
+  border-color: rgba(66, 133, 244, 0.24);
+}
+
+.file-row-default {
+  border-color: rgba(245, 158, 11, 0.18);
+}
+
 .file-row span,
 .file-row small {
   display: block;
@@ -153,6 +279,32 @@
 .file-row-actions {
   display: flex;
   gap: 6px;
+}
+
+.file-row-load {
+  border-color: rgba(77, 163, 255, 0.34) !important;
+  background: rgba(77, 163, 255, 0.08) !important;
+  color: #bfdbfe !important;
+}
+
+.file-row-delete {
+  border-color: rgba(239, 68, 68, 0.34) !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+  color: #fecaca !important;
+}
+
+.file-action-button:hover,
+.file-action-button:focus-visible,
+.file-row button:hover,
+.file-row button:focus-visible {
+  outline: none;
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+body.is-file-manager-open .bottom-toolbar,
+body.is-file-manager-open .status-bar {
+  opacity: 0.28;
 }
 
 @media (max-width: 920px) {

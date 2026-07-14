@@ -27,6 +27,26 @@ function getFilenameFromUrl(value) {
   }
 }
 
+function sourceClassFor(file) {
+  if (file.url && file.source?.toLowerCase().includes('google')) {
+    return 'file-row-drive'
+  }
+  if (file.url) {
+    return 'file-row-link'
+  }
+  return 'file-row-local'
+}
+
+function sourceIconFor(file) {
+  if (file.url && file.source?.toLowerCase().includes('google')) {
+    return 'G'
+  }
+  if (file.url) {
+    return 'L'
+  }
+  return 'F'
+}
+
 export function createFileManager({ dom, modelLoader, setActionStatus, clearPanel }) {
   async function updateQuota() {
     const used = await getWorkspaceUsage()
@@ -39,8 +59,14 @@ export function createFileManager({ dom, modelLoader, setActionStatus, clearPane
     dom.defaultModelList.innerHTML = ''
     for (const model of DEFAULT_MODELS) {
       const row = document.createElement('div')
-      row.className = 'file-row'
-      row.innerHTML = `<span>${model.name}</span><button type="button">Load</button>`
+      row.className = 'file-row file-row-default'
+      row.innerHTML = `
+        <span class="file-row-main">
+          <span class="source-icon source-icon-defaults">D</span>
+          <span><strong>${model.name}</strong><small>Built-in model</small></span>
+        </span>
+        <button class="file-row-load" type="button">Load</button>
+      `
       row.querySelector('button').addEventListener('click', () => {
         modelLoader.loadModelFromUrl({
           url: model.url,
@@ -68,12 +94,15 @@ export function createFileManager({ dom, modelLoader, setActionStatus, clearPane
 
     for (const file of files) {
       const row = document.createElement('div')
-      row.className = 'file-row'
+      row.className = `file-row ${sourceClassFor(file)}`
       row.innerHTML = `
-        <span><strong>${file.name}</strong><small>${file.url ? file.source : formatBytes(file.size)}</small></span>
+        <span class="file-row-main">
+          <span class="source-icon">${sourceIconFor(file)}</span>
+          <span><strong>${file.name}</strong><small>${file.url ? file.source : formatBytes(file.size)}</small></span>
+        </span>
         <div class="file-row-actions">
-          <button type="button" data-load>Load</button>
-          <button type="button" data-delete>Delete</button>
+          <button class="file-row-load" type="button" data-load>Load</button>
+          <button class="file-row-delete" type="button" data-delete>Delete</button>
         </div>
       `
       row.querySelector('[data-load]').addEventListener('click', async () => {
