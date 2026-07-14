@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TunnelSight AI Proposal</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">TunnelSight AI Proposal</h1>
+</header>
+<h1 id="cover-page">COVER PAGE</h1>
+<p><strong>Project Title:</strong> TunnelSight AI: Intelligent 3D
+Subsurface Mapping and Risk Prediction System<br />
+<strong>Track Name:</strong> Development Track<br />
+<strong>Team Name:</strong> 3D-Labs<br />
+<strong>Lead Innovator:</strong> Ezekiel Rego<br />
+<strong>Project ID:</strong> [Insert Project ID]<br />
+<strong>Demo URL:</strong> https://tunnelsight.applications.co.zw/<br />
+<strong>Repository URL:</strong>
+https://github.com/ezekielrego/tunnelsight<br />
+<strong>Date:</strong> July 2026</p>
+<hr />
+<h1 id="section-1-problem-definition-and-strategic-alignment">SECTION 1:
+PROBLEM DEFINITION AND STRATEGIC ALIGNMENT</h1>
+<h2 id="problem-statement">1.1 Problem Statement</h2>
+<p>Zimbabwe’s mining sector faces persistent safety, efficiency, and
+planning challenges because many operators have limited access to
+real-time geological and spatial intelligence. Small-to-medium scale
+miners often depend on manual inspections, outdated maps, isolated
+photographs, and expert judgement under hazardous conditions.</p>
+<p>This creates operational risks including:</p>
+<ul>
+<li>Poor visibility of tunnel geometry and structural change.</li>
+<li>Delayed identification of cracks, unstable zones, water ingress, and
+unsupported roof/crown areas.</li>
+<li>Limited ability to measure, mark, and communicate risk locations in
+a shared 3D environment.</li>
+<li>Weak data records for safety review, planning, and regulatory
+reporting.</li>
+<li>Increased exposure of workers to unsafe underground
+inspections.</li>
+</ul>
+<h2 id="target-users">1.2 Target Users</h2>
+<ul>
+<li>Small-to-medium scale miners.</li>
+<li>Mining engineers, surveyors, and geologists.</li>
+<li>Mine safety officers and inspectors.</li>
+<li>Mining companies seeking digital inspection and operational
+optimisation.</li>
+<li>Regulatory bodies that require structured safety evidence.</li>
+</ul>
+<h2 id="proposed-solution">1.3 Proposed Solution</h2>
+<p>TunnelSight AI: Intelligent 3D Subsurface Mapping and Risk Prediction
+System is an early-stage AI product for 3D underground inspection and
+risk visualisation. The system is designed to let users capture or
+upload tunnel data, view a reconstructed 3D environment, mark hazards,
+measure spatial features, and receive AI-assisted safety insights.</p>
+<p>The current prototype demonstrates a web-based 3D viewer with model
+loading, risk markers, marker creation, selection tools, measurement,
+screenshots, and status handling. Automated hazard classification,
+reconstruction from raw video/image data, and strategy recommendations
+are planned for the challenge MVP.</p>
+<h2 id="strategic-alignment">1.4 Strategic Alignment</h2>
+<p>The solution aligns with Zimbabwe’s National AI Strategy and
+industrial digitalisation goals by:</p>
+<ul>
+<li>Applying AI to mining safety and industrial productivity.</li>
+<li>Supporting data-driven decision-making in resource extraction.</li>
+<li>Reducing worker exposure to hazardous inspection conditions.</li>
+<li>Building local AI capability for high-value industrial use
+cases.</li>
+<li>Supporting future integration with national mining safety
+systems.</li>
+</ul>
+<h2 id="product-maturity-statement">1.5 Product Maturity Statement</h2>
+<p>The solution is an early-stage AI product under active development. A
+partial 3D inspection and viewer workflow exists, while hazard
+classification, risk visualisation from AI outputs, semantic tagging,
+and strategy recommendation will be advanced into a demonstrable MVP
+during the AI4I challenge. The proposed MVP will be tested using
+controlled, simulated, public, and legally obtained mining data and will
+remain a decision-support tool requiring expert human review.</p>
+<hr />
+<h1 id="section-2-technical-design-and-product-logic">SECTION 2:
+TECHNICAL DESIGN AND PRODUCT LOGIC</h1>
+<h2 id="system-architecture-overview">2.1 System Architecture
+Overview</h2>
+<pre class="text"><code>Phone / Camera / Drone / Existing 3D Scan
+        |
+        v
+Image, Video, GLB, Point Cloud or Mesh Upload
+        |
+        v
+Pre-processing and Quality Checks
+        |
+        v
+3D Reconstruction / Model Import Layer
+        |
+        v
+3D Viewer and Inspection Workspace
+        |
+        +--&gt; Manual Markers, Measurement, Semantic Tags
+        |
+        +--&gt; AI Hazard Detection Model
+        |
+        +--&gt; Risk Scoring and Recommendation Engine
+        |
+        v
+Dashboard, Reports, Screenshots and API Outputs
+        |
+        v
+Local / Cloud Storage and ZCHPC CCE Deployment</code></pre>
+<p>Core components:</p>
+<ol type="1">
+<li>Data capture layer: camera, phone, drone, sensor, or existing
+scan/model.</li>
+<li>Pre-processing layer: frame extraction, quality checks, image
+resizing, and metadata validation.</li>
+<li>3D layer: imported GLB/mesh in the current prototype; planned
+photogrammetry/SfM and point-cloud workflow.</li>
+<li>AI layer: planned hazard detection, risk scoring, and human-reviewed
+recommendation logic.</li>
+<li>Application layer: browser-based 3D viewer and inspection
+dashboard.</li>
+<li>Storage/sync layer: planned project files, model outputs,
+annotations, reports, and audit records.</li>
+</ol>
+<h2 id="current-prototype-implementation">2.2 Current Prototype
+Implementation</h2>
+<p>The live prototype at https://tunnelsight.applications.co.zw/
+currently includes:</p>
+<ul>
+<li>PlayCanvas-based 3D tunnel viewer.</li>
+<li>GLB model loading from
+<code>/models/positanos_tunnel.glb</code>.</li>
+<li>Loading, ready, fallback, and error states.</li>
+<li>Fallback synthetic tunnel scene.</li>
+<li>Seeded risk markers with severity, risk score, and recommendation
+text.</li>
+<li>Marker selection and multi-selection.</li>
+<li>Box/lasso-style marker selection.</li>
+<li>Marker creation mode.</li>
+<li>Undo/redo for created markers.</li>
+<li>Screenshot export.</li>
+<li>Basic point-to-point measurement in the scene.</li>
+<li>Mode-based input control so selection, marking, and measurement do
+not behave as camera navigation.</li>
+</ul>
+<h2 id="planned-ai-models-and-methods">2.3 Planned AI Models and
+Methods</h2>
+<h3 id="d-reconstruction">3D Reconstruction</h3>
+<p>Planned method:</p>
+<ul>
+<li>Structure-from-Motion (SfM) and Multi-View Stereo for
+image/video-based reconstruction.</li>
+<li>Candidate tools: COLMAP, OpenMVG/OpenMVS, Open3D, or equivalent
+reproducible pipeline.</li>
+<li>Output: dense point clouds, meshes, GLB/XKT-compatible visual
+models.</li>
+</ul>
+<h3 id="hazard-detection">Hazard Detection</h3>
+<p>Planned method:</p>
+<ul>
+<li>Baseline: manual labels and rule-based visual checks for cracks,
+water ingress, loose rock, unsupported zones, and unsafe openings.</li>
+<li>AI candidate: lightweight CNN/object detection model after a
+labelled dataset is available.</li>
+<li>Candidate families to test: YOLO-family detector or
+EfficientNet-style classifier, subject to dataset fit and compute
+availability.</li>
+</ul>
+<h3 id="risk-prediction">Risk Prediction</h3>
+<p>Planned method:</p>
+<ul>
+<li>Baseline: rule-based risk scoring using hazard class, severity,
+proximity, and confidence.</li>
+<li>AI candidate: gradient boosting or lightweight neural network after
+sufficient labelled cases exist.</li>
+</ul>
+<h3 id="strategy-recommendation">Strategy Recommendation</h3>
+<p>Planned method:</p>
+<ul>
+<li>Human-reviewed rule engine supported by model outputs.</li>
+<li>Outputs may include inspection priority, reinforcement
+recommendation, exclusion zone warning, and follow-up capture
+guidance.</li>
+</ul>
+<h2 id="ai-justification-and-baseline-comparison">2.4 AI Justification
+and Baseline Comparison</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Simple baseline</th>
+<th>AI value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Crack detection</td>
+<td>Manual inspection or fixed threshold</td>
+<td>Learns variations in shape, lighting, scale, and texture</td>
+</tr>
+<tr class="even">
+<td>Water ingress detection</td>
+<td>Manual visual review</td>
+<td>Identifies visual patterns across many frames or scans</td>
+</tr>
+<tr class="odd">
+<td>Hazard classification</td>
+<td>Static checklist</td>
+<td>Combines visual and spatial indicators</td>
+</tr>
+<tr class="even">
+<td>Risk prioritisation</td>
+<td>Manual severity ranking</td>
+<td>Ranks multiple hazards consistently across mapped conditions</td>
+</tr>
+<tr class="odd">
+<td>Strategy support</td>
+<td>Fixed templates</td>
+<td>Adapts suggested actions to detected hazard type and location</td>
+</tr>
+</tbody>
+</table>
+<p>Some system functions correctly remain non-AI, including
+authentication, file upload, map navigation, 3D viewing, and standard
+safety rules.</p>
+<h2 id="data-pipeline">2.5 Data Pipeline</h2>
+<p>Data sources:</p>
+<ul>
+<li>Current prototype model files: local GLB demo tunnel assets.</li>
+<li>Controlled capture data: to be collected during challenge
+testing.</li>
+<li>Synthetic/simulated tunnel data: for early hazard examples and UI
+testing.</li>
+<li>Public datasets: to be used only when licence and relevance are
+verified.</li>
+<li>Expert-labelled samples: required for validated hazard
+detection.</li>
+</ul>
+<p>Processing steps:</p>
+<ol type="1">
+<li>Upload or ingest images, videos, GLB files, point clouds, or
+meshes.</li>
+<li>Extract frames and validate quality.</li>
+<li>Reconstruct or import 3D model.</li>
+<li>Store annotations, measurements, and semantic tags.</li>
+<li>Run hazard detection or rule-based baseline.</li>
+<li>Generate risk markers and a review report.</li>
+</ol>
+<h2 id="edge-and-performance-constraints">2.6 Edge and Performance
+Constraints</h2>
+<p>Initial targets:</p>
+<ul>
+<li>Browser viewer should load controlled GLB test models under normal
+broadband conditions.</li>
+<li>Hazard inference target: less than 200 MB model size for edge
+deployment after quantisation.</li>
+<li>RAM target for edge inference: 256 MB to 1 GB depending on model
+class.</li>
+<li>Offline-capable workflow: local data capture and local inference
+where possible, with later sync.</li>
+<li>Inference latency target: under 100 ms per image for lightweight
+hazard classification on suitable hardware.</li>
+</ul>
+<h2 id="user-interaction-plan">2.7 User Interaction Plan</h2>
+<p>The target workflow is:</p>
+<ol type="1">
+<li>User uploads tunnel images/video or an existing 3D model.</li>
+<li>System creates or loads a 3D model.</li>
+<li>User navigates the tunnel viewer.</li>
+<li>User marks, measures, tags, and reviews risk points.</li>
+<li>AI module proposes hazard classifications and risk scores.</li>
+<li>Qualified human reviewer validates outputs.</li>
+<li>System exports screenshot, report, and structured inspection
+data.</li>
+</ol>
+<hr />
+<h1 id="section-3-deliverables-and-cce-implementation-roadmap">SECTION
+3: DELIVERABLES AND CCE IMPLEMENTATION ROADMAP</h1>
+<h2 id="development-phases">3.1 Development Phases</h2>
+<h3 id="phase-1-prototype-consolidation-weeks-1-4">Phase 1: Prototype
+Consolidation (Weeks 1-4)</h3>
+<ul>
+<li>Stabilise current 3D viewer.</li>
+<li>Improve mesh picking and semantic tagging.</li>
+<li>Add project/session storage.</li>
+<li>Prepare controlled test data.</li>
+</ul>
+<h3 id="phase-2-mvp-development-weeks-5-8">Phase 2: MVP Development
+(Weeks 5-8)</h3>
+<ul>
+<li>Implement image/video upload.</li>
+<li>Build repeatable reconstruction/import workflow.</li>
+<li>Train or test first hazard classifier on small labelled samples or
+synthetic data.</li>
+<li>Connect hazard outputs to 3D risk markers.</li>
+</ul>
+<h3 id="phase-3-testing-and-optimisation-weeks-9-12">Phase 3: Testing
+and Optimisation (Weeks 9-12)</h3>
+<ul>
+<li>Validate hazard detection on controlled test data.</li>
+<li>Measure false positives and false negatives.</li>
+<li>Optimise model and viewer performance.</li>
+<li>Package deployment for ZCHPC CCE or equivalent environment.</li>
+<li>Produce demonstration report and technical documentation.</li>
+</ul>
+<h2 id="component-status-and-challenge-deliverables">3.2 Component
+Status and Challenge Deliverables</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Current status</th>
+<th>Challenge deliverable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3D viewer</td>
+<td>Working prototype</td>
+<td>Stabilised viewer with mesh picking and semantic tagging</td>
+</tr>
+<tr class="even">
+<td>Model loading</td>
+<td>Working GLB loader</td>
+<td>Upload/import workflow for controlled files</td>
+</tr>
+<tr class="odd">
+<td>Risk markers</td>
+<td>Working manual markers</td>
+<td>AI/model-output-generated risk overlays</td>
+</tr>
+<tr class="even">
+<td>Selection tools</td>
+<td>Partially working</td>
+<td>Improved mesh and marker selection</td>
+</tr>
+<tr class="odd">
+<td>Measurement</td>
+<td>Basic working</td>
+<td>Surface-based point measurement</td>
+</tr>
+<tr class="even">
+<td>Screenshot/report evidence</td>
+<td>Screenshot working</td>
+<td>Screenshot plus structured safety summary</td>
+</tr>
+<tr class="odd">
+<td>3D reconstruction</td>
+<td>Not yet implemented in live app</td>
+<td>Repeatable reconstruction pipeline or documented import path</td>
+</tr>
+<tr class="even">
+<td>Hazard detection</td>
+<td>Not yet trained</td>
+<td>First classifier or rule-based baseline connected to viewer</td>
+</tr>
+<tr class="odd">
+<td>Strategy recommendations</td>
+<td>Planned</td>
+<td>Human-reviewed recommendation module</td>
+</tr>
+<tr class="even">
+<td>Backend/API</td>
+<td>Planned</td>
+<td>Minimal API for upload/status/results if required</td>
+</tr>
+</tbody>
+</table>
+<h2 id="key-deliverables">3.3 Key Deliverables</h2>
+<ul>
+<li>Functional web prototype.</li>
+<li>Technical architecture documentation.</li>
+<li>Dataset statement and data governance note.</li>
+<li>Initial model/reconstruction experiment documentation.</li>
+<li>Demo URL and screen-recorded walkthrough.</li>
+<li>Git repository with dependency files.</li>
+<li>Test and validation summary.</li>
+<li>Safety and compliance note.</li>
+</ul>
+<h2 id="cce-implementation-plan">3.4 CCE Implementation Plan</h2>
+<p>The project will be prepared to run in the ZCHPC CCE or equivalent
+Linux/container environment.</p>
+<p>Expected requirements:</p>
+<ul>
+<li>CPU: 4-8 vCPU for web/API and preprocessing.</li>
+<li>GPU: CUDA-compatible GPU for model training or reconstruction
+experiments.</li>
+<li>RAM: 16-32 GB for reconstruction experiments; lower for frontend
+serving.</li>
+<li>Storage: 20-100 GB initial project storage, depending on scan
+volume.</li>
+<li>OS/container: Ubuntu-compatible environment or Docker
+container.</li>
+</ul>
+<p>Example commands:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build</span></code></pre></div>
+<p>Planned AI pipeline commands:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> preprocess.py <span class="at">--input</span> sample_data/raw <span class="at">--output</span> sample_data/processed</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> train_hazard_model.py <span class="at">--config</span> configs/hazard_baseline.yaml</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> infer_hazards.py <span class="at">--input</span> sample_data/test <span class="at">--output</span> outputs/hazards.json</span></code></pre></div>
+<hr />
+<h1 id="section-4-compliance-and-risk-mitigation">SECTION 4: COMPLIANCE
+AND RISK MITIGATION</h1>
+<h2 id="legal-and-data-compliance">4.1 Legal and Data Compliance</h2>
+<p>The system will comply with the Zimbabwe Data Protection Act [Chapter
+12:07] by:</p>
+<ul>
+<li>Collecting only data required for mining inspection workflows.</li>
+<li>Avoiding personal data collection where possible.</li>
+<li>Requiring uploader confirmation that they own or have permission to
+process the site data.</li>
+<li>Protecting mine location, geological, and production information as
+confidential operational data.</li>
+<li>Supporting future data retention and deletion controls.</li>
+</ul>
+<h2 id="ethical-safeguards">4.2 Ethical Safeguards</h2>
+<ul>
+<li>The system is decision-support only.</li>
+<li>It must not replace qualified mining, geological, or geotechnical
+review.</li>
+<li>AI outputs will include confidence, uncertainty, and human review
+requirements.</li>
+<li>False negatives will be treated as high-risk because missing a
+hazard can cause injury or death.</li>
+<li>Recommendations will remain conservative and safety-first.</li>
+</ul>
+<h2 id="technical-risks-and-mitigations">4.3 Technical Risks and
+Mitigations</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Poor lighting or image quality</td>
+<td>Capture guidance, quality checks, repeat capture prompts</td>
+</tr>
+<tr class="even">
+<td>Incomplete reconstruction</td>
+<td>Controlled capture protocol and fallback manual model import</td>
+</tr>
+<tr class="odd">
+<td>Model inaccuracies</td>
+<td>Expert-labelled test data, validation metrics, retraining</td>
+</tr>
+<tr class="even">
+<td>False negatives</td>
+<td>Conservative thresholds and mandatory human review</td>
+</tr>
+<tr class="odd">
+<td>Hardware limitations</td>
+<td>Model quantisation and edge/cloud split</td>
+</tr>
+<tr class="even">
+<td>Confidential mine data exposure</td>
+<td>Access control, encryption, consent, retention policy</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cybersecurity">4.4 Cybersecurity</h2>
+<p>Planned controls:</p>
+<ul>
+<li>Secure API endpoints.</li>
+<li>HTTPS transmission.</li>
+<li>Role-based access control.</li>
+<li>Encrypted storage for uploaded data.</li>
+<li>Audit logs for uploads, analysis, and report generation.</li>
+<li>No secrets committed to the repository.</li>
+</ul>
+<h2 id="testing-and-validation-strategy">4.5 Testing and Validation
+Strategy</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Test</th>
+<th>Current evidence/status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Web viewer</td>
+<td>Loads GLB tunnel model</td>
+<td>Passed in live prototype</td>
+</tr>
+<tr class="even">
+<td>Loading states</td>
+<td>Loading/ready/fallback/error UI</td>
+<td>Implemented</td>
+</tr>
+<tr class="odd">
+<td>Marker tools</td>
+<td>Create/select/undo/redo markers</td>
+<td>Implemented</td>
+</tr>
+<tr class="even">
+<td>Measurement</td>
+<td>Two-click point measurement</td>
+<td>Basic implementation</td>
+</tr>
+<tr class="odd">
+<td>Screenshot</td>
+<td>Export viewport PNG</td>
+<td>Implemented</td>
+</tr>
+<tr class="even">
+<td>Hazard model</td>
+<td>Detect labelled hazards</td>
+<td>Planned</td>
+</tr>
+<tr class="odd">
+<td>Reconstruction</td>
+<td>Produce model from images/video</td>
+<td>Planned</td>
+</tr>
+<tr class="even">
+<td>API/backend</td>
+<td>Upload/status/results</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<p>AI validation metrics to report when available:</p>
+<ul>
+<li>Precision.</li>
+<li>Recall.</li>
+<li>F1 score.</li>
+<li>Confusion matrix.</li>
+<li>False-positive and false-negative examples.</li>
+<li>Processing time per scan.</li>
+<li>Reconstruction completeness.</li>
+</ul>
+<hr />
+<h1 id="section-5-sustainability-and-future-adoption">SECTION 5:
+SUSTAINABILITY AND FUTURE ADOPTION</h1>
+<h2 id="business-model">5.1 Business Model</h2>
+<p>Potential operating models:</p>
+<ul>
+<li>Per-scan safety report fee.</li>
+<li>Monthly subscription for mining cooperatives or companies.</li>
+<li>Enterprise licence for larger mining operators.</li>
+<li>Government/regulator pilot for safety monitoring.</li>
+<li>Custom integration and training services.</li>
+</ul>
+<h2 id="cost-structure">5.2 Cost Structure</h2>
+<p>Major cost drivers:</p>
+<ul>
+<li>Cloud or CCE compute for reconstruction and model training.</li>
+<li>Storage for project scans, images, meshes, and reports.</li>
+<li>Field data collection and annotation.</li>
+<li>Expert geotechnical/mining review.</li>
+<li>Support, onboarding, and model retraining.</li>
+</ul>
+<p>Indicative early-stage estimates:</p>
+<ul>
+<li>Controlled scan storage: 0.5-5 GB per project depending on
+video/image volume.</li>
+<li>Prototype web hosting: low-cost VPS or shared hosting.</li>
+<li>AI training: GPU sessions during model development.</li>
+<li>Human annotation: dependent on labelled hazard categories and expert
+availability.</li>
+</ul>
+<h2 id="scaling-strategy">5.3 Scaling Strategy</h2>
+<ul>
+<li>Start with controlled tunnel inspection and manual/assisted risk
+marking.</li>
+<li>Add validated AI hazard detection.</li>
+<li>Integrate with mine reporting workflows.</li>
+<li>Expand to regional mining markets.</li>
+<li>Add support for IFC/BIM, point clouds, drone capture, and IoT
+sensors.</li>
+</ul>
+<h2 id="team-capability-and-partner-needs">5.4 Team Capability and
+Partner Needs</h2>
+<p>Current capability:</p>
+<ul>
+<li>Web-based 3D prototype development.</li>
+<li>Frontend 3D interaction and inspection UI.</li>
+<li>Early product design and deployment.</li>
+</ul>
+<p>Required partner support:</p>
+<ul>
+<li>Mining/geotechnical adviser for hazard definitions and
+validation.</li>
+<li>AI/computer-vision support for model training and evaluation.</li>
+<li>Data partner for legally obtained mining images/scans.</li>
+<li>DevOps support for CCE/container deployment if required.</li>
+</ul>
+<h2 id="long-term-vision">5.5 Long-Term Vision</h2>
+<p>TunnelSight GAMIS aims to become a national-scale mining safety
+intelligence platform combining:</p>
+<ul>
+<li>3D mine visualisation.</li>
+<li>Time-based tunnel monitoring.</li>
+<li>AI hazard detection.</li>
+<li>Expert-reviewed recommendations.</li>
+<li>Structured safety reports.</li>
+<li>Integration with regulatory and company safety systems.</li>
+</ul>
+<hr />
+<h1 id="appendix-summary">APPENDIX SUMMARY</h1>
+<p>Recommended appendices are provided separately in this submission
+folder:</p>
+<ul>
+<li><code>TECHNICAL_APPENDIX.md</code></li>
+<li><code>DATASET_STATEMENT.md</code></li>
+<li><code>SUBMISSION_CHECKLIST.md</code></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "tunnel-analysis",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "cp index.source.html index.html && vite --host 0.0.0.0",
+    "build": "cp index.source.html index.html && vite build && cp -r dist/assets . && cp dist/index.html .",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "playcanvas": "^2.12.3"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
