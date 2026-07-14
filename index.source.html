@@ -100,6 +100,23 @@
       <symbol id="i-fit" viewBox="0 0 24 24">
         <path d="M8 4H4v4M16 4h4v4M8 20H4v-4M16 20h4v-4M9 9h6v6H9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
       </symbol>
+      <symbol id="i-file-up" viewBox="0 0 24 24">
+        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14 2v5a1 1 0 0 0 1 1h5M12 12v6m3-3-3-3-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-link-source" viewBox="0 0 24 24">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-package-source" viewBox="0 0 24 24">
+        <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73zM12 22V12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3.29 7 12 12l8.71-5M7.5 4.27l9 5.15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-folder-source" viewBox="0 0 24 24">
+        <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-google-drive-source" viewBox="0 0 24 24">
+        <path d="M12.01 1.485c-2.082 0-3.754.02-3.743.047.01.02 1.708 3.001 3.774 6.62l3.76 6.574h3.76c2.081 0 3.753-.02 3.742-.047-.005-.02-1.708-3.001-3.775-6.62l-3.76-6.574zm-4.76 1.73a789.828 789.861 0 0 0-3.63 6.319L0 15.868l1.89 3.298 1.885 3.297 3.62-6.335 3.618-6.33-1.88-3.287C8.1 4.704 7.255 3.22 7.25 3.214zm2.259 12.653-.203.348c-.114.198-.96 1.672-1.88 3.287a423.93 423.948 0 0 1-1.698 2.97c-.01.026 3.24.042 7.222.042h7.244l1.796-3.157c.992-1.734 1.85-3.23 1.906-3.323l.104-.167h-7.249z" fill="currentColor"/>
+      </symbol>
     </svg>
     <canvas id="application"></canvas>
 
@@ -255,34 +272,34 @@
 
         <div class="file-manager-grid">
           <section class="file-source file-source-local">
-            <h3><span class="source-icon source-icon-local">F</span>Local files</h3>
+            <h3><span class="source-icon source-icon-local"><svg viewBox="0 0 24 24"><use href="#i-file-up"></use></svg></span>Local files</h3>
             <p>Choose GLB or GLTF tunnel models from your local files. Saved files stay available in this browser.</p>
             <label class="file-upload-target">
               <input id="workspaceFileInput" type="file" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" />
-              <span><strong>Choose model file</strong><small>Upload from this computer</small></span>
+              <span><span class="upload-icon"><svg viewBox="0 0 24 24"><use href="#i-file-up"></use></svg></span><strong>Choose model file</strong><small>Upload from this computer</small></span>
             </label>
           </section>
 
           <section class="file-source file-source-link">
-            <h3><span class="source-icon source-icon-link">L</span>Link imports</h3>
+            <h3><span class="source-icon source-icon-link"><svg viewBox="0 0 24 24"><use href="#i-link-source"></use></svg></span>Link imports</h3>
             <p>Use a direct model URL, or paste a public Google Drive file link.</p>
             <div class="file-input-row">
               <input id="modelLinkInput" class="editor-input" type="url" placeholder="https://example.com/model.glb" />
-              <button id="loadModelLink" class="file-action-button file-action-link" type="button">Load link</button>
+              <button id="loadModelLink" class="file-action-button file-action-link" type="button"><svg viewBox="0 0 24 24"><use href="#i-link-source"></use></svg>Load link</button>
             </div>
             <div class="file-input-row">
               <input id="googleDriveInput" class="editor-input" type="url" placeholder="Public Google Drive file link" />
-              <button id="loadGoogleDriveLink" class="file-action-button file-action-drive" type="button">Google Drive</button>
+              <button id="loadGoogleDriveLink" class="file-action-button file-action-drive" type="button"><svg viewBox="0 0 24 24"><use href="#i-google-drive-source"></use></svg>Google Drive</button>
             </div>
           </section>
 
           <section class="file-source file-source-defaults">
-            <h3><span class="source-icon source-icon-defaults">D</span>Default models</h3>
+            <h3><span class="source-icon source-icon-defaults"><svg viewBox="0 0 24 24"><use href="#i-package-source"></use></svg></span>Default models</h3>
             <div id="defaultModelList" class="file-list compact-list"></div>
           </section>
 
           <section class="file-source file-source-saved">
-            <h3><span class="source-icon source-icon-saved">S</span>My saved files</h3>
+            <h3><span class="source-icon source-icon-saved"><svg viewBox="0 0 24 24"><use href="#i-folder-source"></use></svg></span>My saved files</h3>
             <div id="savedModelList" class="file-list">
               <span class="empty-file-state">No saved uploads in this browser yet.</span>
             </div>

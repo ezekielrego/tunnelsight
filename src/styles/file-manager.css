@@ -110,8 +110,14 @@
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--text-main);
-  font-size: 0.75rem;
-  font-weight: 800;
+}
+
+.source-icon svg,
+.file-action-button svg,
+.file-row button svg,
+.upload-icon svg {
+  width: 16px;
+  height: 16px;
 }
 
 .source-icon-local,
@@ -170,6 +176,17 @@
   text-align: center;
 }
 
+.upload-icon {
+  display: grid !important;
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 8px;
+  place-items: center;
+  border-radius: 6px;
+  background: rgba(77, 163, 255, 0.12);
+  color: #bfdbfe;
+}
+
 .file-upload-target small {
   margin-top: 4px;
   color: var(--text-muted);
@@ -200,6 +217,10 @@
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-main);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
 }
 
 .file-action-link {

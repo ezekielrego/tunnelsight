@@ -39,12 +39,16 @@ function sourceClassFor(file) {
 
 function sourceIconFor(file) {
   if (file.url && file.source?.toLowerCase().includes('google')) {
-    return 'G'
+    return 'i-google-drive-source'
   }
   if (file.url) {
-    return 'L'
+    return 'i-link-source'
   }
-  return 'F'
+  return 'i-file-up'
+}
+
+function iconUse(iconId) {
+  return `<svg viewBox="0 0 24 24"><use href="#${iconId}"></use></svg>`
 }
 
 export function createFileManager({ dom, modelLoader, setActionStatus, clearPanel }) {
@@ -62,10 +66,10 @@ export function createFileManager({ dom, modelLoader, setActionStatus, clearPane
       row.className = 'file-row file-row-default'
       row.innerHTML = `
         <span class="file-row-main">
-          <span class="source-icon source-icon-defaults">D</span>
+          <span class="source-icon source-icon-defaults">${iconUse('i-package-source')}</span>
           <span><strong>${model.name}</strong><small>Built-in model</small></span>
         </span>
-        <button class="file-row-load" type="button">Load</button>
+        <button class="file-row-load" type="button">${iconUse('i-package-source')}Load</button>
       `
       row.querySelector('button').addEventListener('click', () => {
         modelLoader.loadModelFromUrl({
@@ -97,12 +101,12 @@ export function createFileManager({ dom, modelLoader, setActionStatus, clearPane
       row.className = `file-row ${sourceClassFor(file)}`
       row.innerHTML = `
         <span class="file-row-main">
-          <span class="source-icon">${sourceIconFor(file)}</span>
+          <span class="source-icon">${iconUse(sourceIconFor(file))}</span>
           <span><strong>${file.name}</strong><small>${file.url ? file.source : formatBytes(file.size)}</small></span>
         </span>
         <div class="file-row-actions">
-          <button class="file-row-load" type="button" data-load>Load</button>
-          <button class="file-row-delete" type="button" data-delete>Delete</button>
+          <button class="file-row-load" type="button" data-load>${iconUse(file.url ? sourceIconFor(file) : 'i-file-up')}Load</button>
+          <button class="file-row-delete" type="button" data-delete><svg viewBox="0 0 24 24"><path d="M10 11v6M14 11v6M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Delete</button>
         </div>
       `
       row.querySelector('[data-load]').addEventListener('click', async () => {
