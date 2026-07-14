@@ -1,0 +1,90 @@
+body.is-compact-layout .inspection-panel {
+  display: none;
+}
+
+body.is-compact-layout .bottom-toolbar {
+  opacity: 0.92;
+}
+
+@media (max-width: 1380px) {
+  .inspection-panel {
+    display: none;
+  }
+
+  .status-bar {
+    right: 96px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .panel-block {
+    width: 320px;
+  }
+
+  .right-tools {
+    top: auto;
+    right: 18px;
+    bottom: 122px;
+  }
+
+  .bottom-toolbar {
+    left: auto;
+    right: 18px;
+    transform: none;
+    max-width: calc(100vw - 140px);
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 820px) {
+  .left-rail,
+  .right-tools {
+    display: none;
+  }
+
+  .top-menu,
+  .left-panel,
+  .status-bar {
+    left: 14px;
+  }
+
+  .top-menu {
+    right: 14px;
+    width: auto;
+    justify-content: space-between;
+  }
+
+  .command-panel {
+    left: 14px;
+    right: 14px;
+    width: auto;
+  }
+
+  .left-panel {
+    position: static;
+  }
+
+  .panel-block {
+    position: static;
+    width: calc(100vw - 28px);
+    max-height: none;
+    margin: 84px 14px 0;
+  }
+
+  .bottom-toolbar {
+    left: 14px;
+    right: 14px;
+    transform: none;
+    bottom: 76px;
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .status-bar {
+    right: 14px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    bottom: 0;
+  }
+}

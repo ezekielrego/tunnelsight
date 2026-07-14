@@ -1,0 +1,155 @@
+.glass-panel,
+.left-panel,
+.bottom-toolbar,
+.mode-badge {
+  pointer-events: auto;
+}
+
+.glass-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)),
+    var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft), var(--shadow-inner);
+  backdrop-filter: blur(20px);
+  border-radius: 8px;
+}
+
+.left-rail,
+.top-menu,
+.mode-badge,
+.left-panel,
+.right-tools,
+.inspection-panel,
+.bottom-toolbar,
+.status-bar {
+  position: absolute;
+}
+
+.left-rail {
+  top: 18px;
+  left: 18px;
+  bottom: 18px;
+  width: 64px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 8px;
+}
+
+.rail-group,
+.tool-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rail-group-bottom {
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.top-menu {
+  top: 20px;
+  left: 108px;
+  height: 54px;
+  padding: 8px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.menu-button {
+  height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.menu-button:hover,
+.menu-button:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-main);
+  outline: none;
+}
+
+.mode-badge {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 180px;
+  height: 46px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 18px;
+}
+
+.command-panel {
+  position: absolute;
+  top: 88px;
+  left: 108px;
+  width: min(360px, calc(100vw - 132px));
+  padding: 14px;
+  pointer-events: auto;
+}
+
+.command-panel[hidden] {
+  display: none;
+}
+
+.command-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.command-panel-header strong {
+  font-size: 0.92rem;
+}
+
+.command-panel p {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.command-close {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.mode-dot,
+.chip-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.mode-dot,
+.chip-live {
+  background: var(--accent-orange);
+  box-shadow: 0 0 18px rgba(255, 122, 0, 0.7);
+}
+
+.chip-info {
+  background: var(--accent-blue);
+  box-shadow: 0 0 16px rgba(77, 163, 255, 0.65);
+}
+

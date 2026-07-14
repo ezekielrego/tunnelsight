@@ -1,0 +1,82 @@
+:root {
+  color-scheme: dark;
+  --bg-base: #04070c;
+  --panel: rgba(20, 24, 32, 0.82);
+  --panel-secondary: rgba(32, 36, 46, 0.88);
+  --panel-strong: rgba(17, 21, 29, 0.94);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text-main: #f1f5f9;
+  --text-muted: #9ca3af;
+  --accent-orange: #ff7a00;
+  --accent-blue: #4da3ff;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.38);
+  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(77, 163, 255, 0.14), transparent 22%),
+    radial-gradient(circle at top left, rgba(255, 122, 0, 0.12), transparent 24%),
+    linear-gradient(180deg, #02050a 0%, #06111a 100%);
+  color: var(--text-main);
+}
+
+body {
+  position: relative;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+#application {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+body[data-mode="marker"] #application,
+body[data-mode="measure"] #application,
+body[data-mode="select"] #application,
+body[data-mode="boxSelect"] #application,
+body[data-mode="lasso"] #application {
+  cursor: crosshair;
+}
+
+body[data-mode="pan"] #application {
+  cursor: move;
+}
+
+#app-shell {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+#label-layer {
+  position: absolute;
+  inset: 0;
+}

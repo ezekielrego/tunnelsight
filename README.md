@@ -35,6 +35,22 @@ docs/POTRAZ/
 
 ```text
 src/
+  app/
+    application orchestration and event wiring
+  config/
+    model paths, mode labels, panel content and inspection seed data
+  controls/
+    camera orbit, pan, zoom and animated framing controls
+  scene/
+    PlayCanvas app bootstrap, grid, model loading, fallback scene and framing
+  tools/
+    marker, selection, measurement and screenshot tools
+  ui/
+    DOM references and UI state rendering
+  utils/
+    shared formatters
+  styles/
+    base, overlay, panel, toolbar and responsive styles
   main.js
   style.css
 models/

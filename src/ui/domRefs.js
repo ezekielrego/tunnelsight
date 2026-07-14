@@ -1,0 +1,35 @@
+const byId = (id) => document.getElementById(id)
+
+export function getDomRefs() {
+  return {
+    canvas: byId('application'),
+    zoneNameEl: byId('zoneName'),
+    riskScoreEl: byId('riskScore'),
+    labelLayerEl: byId('label-layer'),
+    severityLevelEl: byId('severityLevel'),
+    inspectionTimestampEl: byId('inspectionTimestamp'),
+    recommendationTextEl: byId('recommendationText'),
+    riskPointsCountEl: byId('riskPointsCount'),
+    alertsCountEl: byId('alertsCount'),
+    selectedCountEl: byId('selectedCount'),
+    hiddenCountEl: byId('hiddenCount'),
+    currentModeLabelEl: byId('currentModeLabel'),
+    modelLoadStateEl: byId('modelLoadState'),
+    actionStatusEl: byId('actionStatus'),
+    loadingOverlayEl: byId('loadingOverlay'),
+    loadingStateLabelEl: byId('loadingStateLabel'),
+    loadingPercentEl: byId('loadingPercent'),
+    loadingProgressBarEl: byId('loadingProgressBar'),
+    loadingMessageEl: byId('loadingMessage'),
+    retryModelLoadButton: byId('retryModelLoad'),
+    useFallbackSceneButton: byId('useFallbackScene'),
+    commandPanelEl: byId('commandPanel'),
+    commandPanelTitleEl: byId('commandPanelTitle'),
+    commandPanelTextEl: byId('commandPanelText'),
+    closeCommandPanelButton: byId('closeCommandPanel'),
+    actionFocusTargetButton: byId('actionFocusTarget'),
+    actionOrbitResetButton: byId('actionOrbitReset'),
+    actionLoadFallbackButton: byId('actionLoadFallback'),
+    actionFitViewButton: byId('actionFitView'),
+  }
+}
