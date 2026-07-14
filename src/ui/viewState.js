@@ -111,7 +111,7 @@ export function createViewState({ dom, getMarkers }) {
   }
 
   function setModelLoadState(modelLoadState, modelLoadMessage) {
-    const modelLoadProgress = modelLoadState === 'ready' || modelLoadState === 'fallback'
+    const modelLoadProgress = modelLoadState === 'ready'
       ? 100
       : modelLoadState === 'loading'
         ? appState.modelLoadProgress

@@ -3,7 +3,6 @@ import { createOrbitCameraControls } from '../controls/orbitCamera.js'
 import { createPlayCanvasApp } from '../scene/playcanvasApp.js'
 import { createGrid } from '../scene/grid.js'
 import { frameEntity as frameSceneEntity } from '../scene/framing.js'
-import { createFallbackTunnel as buildFallbackTunnel } from '../scene/fallbackTunnel.js'
 import { createModelLoader } from '../scene/modelLoader.js'
 import { createMarkerManager } from '../tools/markerManager.js'
 import { createMeasurementTool } from '../tools/measurementTool.js'
@@ -32,7 +31,6 @@ export function createTunnelSightApp(dom) {
     renderAppState,
     setAppState,
     setMode,
-    setModelLoadState,
     setModelLoadProgress,
     showPanel,
     clearPanel,
@@ -98,19 +96,6 @@ export function createTunnelSightApp(dom) {
     }
 
     setActionStatus('No model to frame')
-  }
-
-  function createFallbackTunnel() {
-    buildFallbackTunnel({
-      pc,
-      modelRoot,
-      clearModelRoot: () => clearModelRoot(modelRoot),
-      markerManager,
-      measurementTool,
-      modelLoader,
-      frameEntity,
-      setModelLoadState,
-    })
   }
 
   function resetView() {
@@ -286,11 +271,6 @@ export function createTunnelSightApp(dom) {
       modelLoader.loadPrimaryModel()
     })
 
-    dom.useFallbackSceneButton?.addEventListener('click', () => {
-      createFallbackTunnel()
-      setActionStatus('Fallback scene loaded')
-    })
-
     dom.actionOrbitResetButton?.addEventListener('click', () => {
       resetView()
       setActionStatus('Orbit reset')
@@ -304,10 +284,6 @@ export function createTunnelSightApp(dom) {
       focusModel()
     })
 
-    dom.actionLoadFallbackButton?.addEventListener('click', () => {
-      createFallbackTunnel()
-      setActionStatus('Fallback scene loaded')
-    })
   }
 
   function bindUpdateLoop() {
@@ -334,6 +310,5 @@ export function createTunnelSightApp(dom) {
     focusModel,
     resetView,
     loadPrimaryModel: modelLoader.loadPrimaryModel,
-    createFallbackTunnel,
   }
 }

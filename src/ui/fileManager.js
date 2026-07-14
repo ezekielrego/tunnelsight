@@ -66,10 +66,9 @@ export function createFileManager({ dom, modelLoader, setActionStatus, clearPane
       row.className = 'file-row file-row-default'
       row.innerHTML = `
         <span class="file-row-main">
-          <span class="source-icon source-icon-defaults">${iconUse('i-package-source')}</span>
           <span><strong>${model.name}</strong><small>Built-in model</small></span>
         </span>
-        <button class="file-row-load" type="button">${iconUse('i-package-source')}Load</button>
+        <button class="file-row-load" type="button">Load</button>
       `
       row.querySelector('button').addEventListener('click', () => {
         modelLoader.loadModelFromUrl({

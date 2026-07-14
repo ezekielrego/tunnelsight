@@ -11,18 +11,6 @@ export const DEFAULT_MODELS = [
     url: '/models/positanos_tunnel.glb',
     filename: 'positanos_tunnel.glb',
   },
-  {
-    id: 'sample',
-    name: 'Sample Tunnel',
-    url: '/models/sample-tunnel.glb',
-    filename: 'sample-tunnel.glb',
-  },
-  {
-    id: 'tunnel',
-    name: 'Tunnel Model',
-    url: '/models/tunnel.glb',
-    filename: 'tunnel.glb',
-  },
 ]
 
 export const INSPECTION_POINTS = [
@@ -80,6 +68,5 @@ export const MODEL_LOAD_LABELS = {
   idle: 'Idle',
   loading: 'Loading',
   ready: 'Ready',
-  fallback: 'Fallback',
   error: 'Error',
 }

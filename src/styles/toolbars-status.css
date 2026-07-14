@@ -161,7 +161,6 @@ body[data-model-load-state="ready"] .stat-pill-state strong {
   color: var(--success);
 }
 
-body[data-model-load-state="fallback"] .stat-pill-state strong,
 body[data-model-load-state="error"] .stat-pill-state strong {
   color: var(--danger);
 }

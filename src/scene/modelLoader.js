@@ -92,7 +92,7 @@ export function createModelLoader({
     setAppState({
       modelLoadState: 'error',
       modelLoadProgress: 0,
-      modelLoadMessage: `Could not load ${label}. Retry the model or use the fallback scene.`,
+      modelLoadMessage: `Could not load ${label}. Retry the model or choose a file from File Manager.`,
       actionStatus: 'Model load failed',
     })
     })

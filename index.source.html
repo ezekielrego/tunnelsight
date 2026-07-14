@@ -107,10 +107,6 @@
       <symbol id="i-link-source" viewBox="0 0 24 24">
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </symbol>
-      <symbol id="i-package-source" viewBox="0 0 24 24">
-        <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73zM12 22V12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M3.29 7 12 12l8.71-5M7.5 4.27l9 5.15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </symbol>
       <symbol id="i-folder-source" viewBox="0 0 24 24">
         <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </symbol>
@@ -192,7 +188,6 @@
         <p id="loadingMessage">Starting viewer.</p>
         <div class="loading-actions">
           <button id="retryModelLoad" class="loading-button" type="button" hidden>Retry model</button>
-          <button id="useFallbackScene" class="loading-button" type="button">Use fallback</button>
         </div>
       </div>
 
@@ -294,7 +289,7 @@
           </section>
 
           <section class="file-source file-source-defaults">
-            <h3><span class="source-icon source-icon-defaults"><svg viewBox="0 0 24 24"><use href="#i-package-source"></use></svg></span>Default models</h3>
+            <h3>Default model</h3>
             <div id="defaultModelList" class="file-list compact-list"></div>
           </section>
 
@@ -379,7 +374,6 @@
         <button class="icon-button compact" type="button" title="Fullscreen" data-action="toggle-fullscreen"><span class="icon"><svg viewBox="0 0 24 24"><use href="#i-fullscreen"></use></svg></span></button>
         <button class="icon-button compact" type="button" title="Screenshot" data-action="capture-screenshot"><span class="icon"><svg viewBox="0 0 24 24"><use href="#i-export"></use></svg></span></button>
         <button class="icon-button compact" type="button" title="Inspect" data-mode-target="inspect"><span class="icon"><svg viewBox="0 0 24 24"><use href="#i-inspect"></use></svg></span></button>
-        <button id="actionLoadFallback" class="icon-button compact" type="button" title="World"><span class="icon"><svg viewBox="0 0 24 24"><use href="#i-world"></use></svg></span></button>
         <button id="actionFitView" class="icon-button compact" type="button" title="Fit view"><span class="icon"><svg viewBox="0 0 24 24"><use href="#i-fit"></use></svg></span></button>
       </div>
 
