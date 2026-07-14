@@ -1,16 +1,58 @@
 import { formatDistance } from '../utils/formatters.js'
 
-export function createMeasurementTool({ app, pc, camera, labelLayerEl, appState, setAppState, markerManager, cameraControls }) {
+export function createMeasurementTool({ app, pc, camera, modelRoot, labelLayerEl, appState, setAppState, markerManager, cameraControls }) {
   const measurements = []
   const measurementLabels = []
+  const measurementLines = []
+  let lineMaterial = null
+
+  function getLineMaterial() {
+    if (lineMaterial) {
+      return lineMaterial
+    }
+
+    lineMaterial = new pc.StandardMaterial()
+    lineMaterial.diffuse = new pc.Color(0.35, 0.7, 1)
+    lineMaterial.emissive = new pc.Color(0.35, 0.7, 1)
+    lineMaterial.emissiveIntensity = 1.6
+    lineMaterial.update()
+    return lineMaterial
+  }
+
+  function createMeasurementLine(start, end) {
+    const length = start.distance(end)
+    if (length < 0.001) {
+      return null
+    }
+
+    const midpoint = start.clone().add(end).mulScalar(0.5)
+    const lineEntity = new pc.Entity('measurement-line')
+    lineEntity.addComponent('render', { type: 'box' })
+    lineEntity.setLocalScale(0.045, 0.045, length)
+    lineEntity.setPosition(midpoint)
+    lineEntity.lookAt(end)
+
+    lineEntity.render.meshInstances.forEach((meshInstance) => {
+      meshInstance.material = getLineMaterial()
+    })
+
+    modelRoot.addChild(lineEntity)
+    measurementLines.push(lineEntity)
+    return lineEntity
+  }
 
   function clearMeasurements() {
     for (const label of measurementLabels) {
       label.remove()
     }
 
+    for (const line of measurementLines) {
+      line.destroy()
+    }
+
     measurements.length = 0
     measurementLabels.length = 0
+    measurementLines.length = 0
     appState.measureStart = null
   }
 
@@ -51,12 +93,13 @@ export function createMeasurementTool({ app, pc, camera, labelLayerEl, appState,
     const start = appState.measureStart.clone()
     const end = point.clone()
     const distanceValue = start.distance(end)
+    const line = createMeasurementLine(start, end)
     const label = document.createElement('div')
     label.className = 'measurement-label'
     label.textContent = formatDistance(distanceValue)
     labelLayerEl.appendChild(label)
 
-    measurements.push({ start, end, distance: distanceValue, label })
+    measurements.push({ start, end, distance: distanceValue, label, line })
     measurementLabels.push(label)
     setAppState({
       measureStart: null,

@@ -1,4 +1,4 @@
-export function createSelectionBox({ labelLayerEl, camera, markerManager }) {
+export function createSelectionBox({ labelLayerEl, camera, markerManager, getViewSnapshot }) {
   const selectionBoxEl = document.createElement('div')
   selectionBoxEl.className = 'selection-box'
   selectionBoxEl.hidden = true
@@ -75,6 +75,11 @@ export function createSelectionBox({ labelLayerEl, camera, markerManager }) {
     })
 
     markerManager.updateMultiSelection(selectedMarkers)
+    markerManager.saveSelectionSnapshot({
+      rect,
+      selectedMarkers,
+      viewSnapshot: getViewSnapshot?.(),
+    })
   }
 
   return {

@@ -32,6 +32,11 @@
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 14px 42px rgba(0, 0, 0, 0.42);
 }
 
+.marker-label.is-near-view {
+  border-color: rgba(77, 163, 255, 0.72);
+  box-shadow: 0 0 0 1px rgba(77, 163, 255, 0.18), 0 16px 42px rgba(77, 163, 255, 0.18);
+}
+
 .selection-box {
   position: absolute;
   border: 1px solid rgba(77, 163, 255, 0.92);

@@ -11,6 +11,8 @@ import { downloadScreenshot } from '../tools/screenshot.js'
 import { createFileManager } from '../ui/fileManager.js'
 import { createViewState } from '../ui/viewState.js'
 
+const TOGGLE_MODE_TARGETS = new Set(['select', 'boxSelect', 'lasso', 'measure', 'marker', 'annotate', 'highlight'])
+
 function clearModelRoot(modelRoot) {
   for (let index = modelRoot.children.length - 1; index >= 0; index -= 1) {
     modelRoot.children[index].destroy()
@@ -56,6 +58,7 @@ export function createTunnelSightApp(dom) {
     app,
     pc,
     camera,
+    modelRoot,
     labelLayerEl: dom.labelLayerEl,
     appState,
     setAppState,
@@ -67,6 +70,7 @@ export function createTunnelSightApp(dom) {
     labelLayerEl: dom.labelLayerEl,
     camera,
     markerManager,
+    getViewSnapshot: cameraControls.getSnapshot,
   })
 
   const modelLoader = createModelLoader({
@@ -218,7 +222,7 @@ export function createTunnelSightApp(dom) {
       }
 
       if (appState.mode === 'marker' && appState.modelLoadState !== 'loading') {
-        markerManager.createCustomMarkerAt(measurementTool.getPlacementPoint(event))
+        markerManager.createCustomMarkerAt(measurementTool.getPlacementPoint(event), cameraControls.getSnapshot())
       }
     })
 
@@ -246,7 +250,15 @@ export function createTunnelSightApp(dom) {
 
     document.querySelectorAll('[data-mode-target]').forEach((button) => {
       button.addEventListener('click', () => {
-        setMode(button.dataset.modeTarget)
+        const nextMode = button.dataset.modeTarget
+        if (appState.mode === nextMode && TOGGLE_MODE_TARGETS.has(nextMode)) {
+          setMode('inspect')
+          markerManager.clearSelection()
+          setActionStatus('Navigation active')
+          return
+        }
+
+        setMode(nextMode)
       })
     })
 
@@ -289,7 +301,7 @@ export function createTunnelSightApp(dom) {
   function bindUpdateLoop() {
     app.on('update', (dt) => {
       cameraControls.update(dt)
-      markerManager.updateMarkerLabels(camera, dt)
+      markerManager.updateMarkerLabels(camera, dt, cameraControls)
       measurementTool.updateMeasurementLabels()
     })
   }

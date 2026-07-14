@@ -6,6 +6,10 @@ function easeInOutCubic(value) {
     : 1 - ((-2 * value + 2) ** 3) / 2
 }
 
+function getAngleDelta(a, b) {
+  return Math.abs((((a - b) % 360) + 540) % 360 - 180)
+}
+
 export function createOrbitCameraControls({ app, camera }) {
   let yaw = 24
   let pitch = -12
@@ -78,6 +82,34 @@ export function createOrbitCameraControls({ app, camera }) {
     pitch = -14
   }
 
+  function getSnapshot() {
+    return {
+      target: [orbitTarget.x, orbitTarget.y, orbitTarget.z],
+      distance,
+      yaw,
+      pitch,
+    }
+  }
+
+  function isNearSnapshot(snapshot, targetThreshold = 5) {
+    if (!snapshot?.target) {
+      return false
+    }
+
+    const dx = orbitTarget.x - snapshot.target[0]
+    const dy = orbitTarget.y - snapshot.target[1]
+    const dz = orbitTarget.z - snapshot.target[2]
+    const targetDistance = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz))
+    const zoomThreshold = Math.max(4, (snapshot.distance ?? distance) * 0.45)
+    const yawDelta = getAngleDelta(yaw, snapshot.yaw ?? yaw)
+    const pitchDelta = Math.abs(pitch - (snapshot.pitch ?? pitch))
+
+    return targetDistance <= targetThreshold
+      && Math.abs(distance - (snapshot.distance ?? distance)) <= zoomThreshold
+      && yawDelta <= 45
+      && pitchDelta <= 35
+  }
+
   function update(dt) {
     if (cameraMove.active) {
       cameraMove.elapsed += dt
@@ -117,6 +149,8 @@ export function createOrbitCameraControls({ app, camera }) {
       pointerDragged = value
     },
     getDistance: () => distance,
+    getSnapshot,
+    isNearSnapshot,
     setDistance: (value) => {
       distance = value
     },

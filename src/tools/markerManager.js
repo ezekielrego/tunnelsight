@@ -6,6 +6,7 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
   const labelAnchors = []
   const historyStack = []
   const redoStack = []
+  const selectionSnapshots = []
   let customMarkerCount = 0
 
   function clearSelection() {
@@ -17,13 +18,34 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     setAppState({ selectedMarker: null, selectedMarkers: [], hiddenMarkerCount: 0 })
   }
 
-  function updateLabelsVisibility() {
+  function getNearbySelectionMarkerIds(cameraControls) {
+    const markerIds = new Set()
+    if (!cameraControls) {
+      return markerIds
+    }
+
+    for (const snapshot of selectionSnapshots) {
+      if (cameraControls.isNearSnapshot(snapshot.viewSnapshot, 6)) {
+        snapshot.markerIds.forEach((markerId) => markerIds.add(markerId))
+      }
+    }
+
+    return markerIds
+  }
+
+  function updateLabelsVisibility(cameraControls) {
+    const nearbySelectionMarkerIds = getNearbySelectionMarkerIds(cameraControls)
+
     for (let index = 0; index < labelAnchors.length; index += 1) {
       const anchor = labelAnchors[index]
       const marker = markers[index]
-      anchor.hidden = !marker.enabled
       const isSelected = appState.selectedMarkers.includes(marker)
+      const isSavedAnnotation = Boolean(marker.viewSnapshot)
+      const isNearSavedView = isSavedAnnotation && cameraControls?.isNearSnapshot(marker.viewSnapshot, 5.5)
+      const isNearSavedSelection = nearbySelectionMarkerIds.has(marker.riskId)
+      anchor.hidden = !marker.enabled || (isSavedAnnotation && !isSelected && !isNearSavedView && !isNearSavedSelection)
       anchor.classList.toggle('is-selected', isSelected)
+      anchor.classList.toggle('is-near-view', Boolean(isNearSavedView || isNearSavedSelection))
       marker.setLocalScale(isSelected ? 0.28 : 0.18, isSelected ? 0.28 : 0.18, isSelected ? 0.28 : 0.18)
     }
 
@@ -41,6 +63,7 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     marker.severity = point.severity
     marker.riskScore = String(point.riskScore)
     marker.recommendation = point.recommendation
+    marker.viewSnapshot = point.viewSnapshot ?? null
 
     const color = SEVERITY_COLORS[point.severity] ?? SEVERITY_COLORS.Warning
     const material = new pc.StandardMaterial()
@@ -151,7 +174,28 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     }
   }
 
-  function createCustomMarkerAt(position) {
+  function saveSelectionSnapshot({ rect, selectedMarkers, viewSnapshot }) {
+    if (!selectedMarkers.length || !viewSnapshot) {
+      return
+    }
+
+    selectionSnapshots.unshift({
+      id: `selection-${Date.now()}`,
+      createdAt: new Date().toISOString(),
+      rect,
+      viewSnapshot,
+      markerIds: selectedMarkers.map((marker) => marker.riskId),
+      markerLabels: selectedMarkers.map((marker) => marker.label),
+    })
+
+    if (selectionSnapshots.length > 16) {
+      selectionSnapshots.length = 16
+    }
+
+    setActionStatus(`${selectedMarkers.length} markers selected and view saved`)
+  }
+
+  function createCustomMarkerAt(position, viewSnapshot) {
     customMarkerCount += 1
     const point = {
       id: `custom-${Date.now()}`,
@@ -160,6 +204,7 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
       severity: 'Warning',
       riskScore: 50,
       recommendation: 'New marker placed manually. Add inspection notes and verify severity.',
+      viewSnapshot,
     }
     const marker = addWeakPoint(point)
     historyStack.push({ type: 'create-marker', point, marker })
@@ -205,11 +250,14 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
 
     markers.length = 0
     labelAnchors.length = 0
+    historyStack.length = 0
+    redoStack.length = 0
+    selectionSnapshots.length = 0
     clearMeasurements?.()
     clearSelection()
   }
 
-  function updateMarkerLabels(camera, dt) {
+  function updateMarkerLabels(camera, dt, cameraControls) {
     for (let index = 0; index < markers.length; index += 1) {
       const marker = markers[index]
       const anchor = labelAnchors[index]
@@ -220,16 +268,18 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
       anchor.style.top = `${screenPos.y - 18}px`
     }
 
-    updateLabelsVisibility()
+    updateLabelsVisibility(cameraControls)
   }
 
   return {
     markers,
     labelAnchors,
+    selectionSnapshots,
     addWeakPoint,
     seedInspectionMarkers,
     updateSelection,
     updateMultiSelection,
+    saveSelectionSnapshot,
     findClosestMarker,
     createCustomMarkerAt,
     clearMarkerLabels,

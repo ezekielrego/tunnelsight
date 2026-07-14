@@ -37,8 +37,8 @@ export function createModelLoader({
     modelLoadAttempt += 1
     const attempt = modelLoadAttempt
 
-    clearModelRoot()
     markerManager.clearMarkerLabels(measurementTool.clearMeasurements)
+    clearModelRoot()
     removeCurrentModelAsset()
     if (objectUrl) {
       currentObjectUrl = url
