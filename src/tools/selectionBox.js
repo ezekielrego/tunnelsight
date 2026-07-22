@@ -10,6 +10,29 @@ export function createSelectionBox({ labelLayerEl, camera, markerManager, getVie
   let selectionStartY = 0
   let lastX = 0
   let lastY = 0
+  let selectionMode = 'boxSelect'
+  let lassoPoints = []
+
+  function getViewportPoint(event) {
+    return {
+      x: event.clientX,
+      y: event.clientY,
+    }
+  }
+
+  function isPointInsidePolygon(point, polygon) {
+    let inside = false
+    for (let index = 0, previous = polygon.length - 1; index < polygon.length; previous = index, index += 1) {
+      const currentPoint = polygon[index]
+      const previousPoint = polygon[previous]
+      const intersects = ((currentPoint.y > point.y) !== (previousPoint.y > point.y))
+        && (point.x < ((previousPoint.x - currentPoint.x) * (point.y - currentPoint.y)) / (previousPoint.y - currentPoint.y) + currentPoint.x)
+      if (intersects) {
+        inside = !inside
+      }
+    }
+    return inside
+  }
 
   function updateSelectionBox(startX, startY, endX, endY) {
     const left = Math.min(startX, endX)
@@ -24,13 +47,36 @@ export function createSelectionBox({ labelLayerEl, camera, markerManager, getVie
     selectionBoxEl.style.height = `${height}px`
   }
 
-  function begin(event) {
+  function updateLassoPath() {
+    const xs = lassoPoints.map((point) => point.x)
+    const ys = lassoPoints.map((point) => point.y)
+    const left = Math.min(...xs)
+    const top = Math.min(...ys)
+    const width = Math.max(1, Math.max(...xs) - left)
+    const height = Math.max(1, Math.max(...ys) - top)
+    const polygon = lassoPoints
+      .map((point) => `${((point.x - left) / width) * 100}% ${((point.y - top) / height) * 100}%`)
+      .join(', ')
+
+    selectionBoxEl.hidden = false
+    selectionBoxEl.style.left = `${left}px`
+    selectionBoxEl.style.top = `${top}px`
+    selectionBoxEl.style.width = `${width}px`
+    selectionBoxEl.style.height = `${height}px`
+    selectionBoxEl.style.clipPath = `polygon(${polygon})`
+  }
+
+  function begin(event, mode = 'boxSelect') {
     boxSelecting = true
     pointerDragged = false
+    selectionMode = mode
+    lassoPoints = [getViewportPoint(event)]
     selectionStartX = event.clientX
     selectionStartY = event.clientY
     lastX = event.clientX
     lastY = event.clientY
+    selectionBoxEl.classList.toggle('selection-box-lasso', selectionMode === 'lasso')
+    selectionBoxEl.style.clipPath = ''
     updateSelectionBox(selectionStartX, selectionStartY, selectionStartX, selectionStartY)
   }
 
@@ -44,6 +90,12 @@ export function createSelectionBox({ labelLayerEl, camera, markerManager, getVie
     }
     lastX = event.clientX
     lastY = event.clientY
+    if (selectionMode === 'lasso') {
+      lassoPoints.push(getViewportPoint(event))
+      updateLassoPath()
+      return
+    }
+
     updateSelectionBox(selectionStartX, selectionStartY, event.clientX, event.clientY)
   }
 
@@ -54,6 +106,7 @@ export function createSelectionBox({ labelLayerEl, camera, markerManager, getVie
 
     boxSelecting = false
     selectionBoxEl.hidden = true
+    selectionBoxEl.style.clipPath = ''
 
     const rect = {
       left: Math.min(selectionStartX, lastX),
@@ -68,6 +121,10 @@ export function createSelectionBox({ labelLayerEl, camera, markerManager, getVie
       }
 
       const screenPos = camera.camera.worldToScreen(marker.getPosition())
+      if (selectionMode === 'lasso' && lassoPoints.length > 2) {
+        return isPointInsidePolygon({ x: screenPos.x, y: screenPos.y }, lassoPoints)
+      }
+
       return screenPos.x >= rect.left
         && screenPos.x <= rect.right
         && screenPos.y >= rect.top

@@ -7,7 +7,9 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
   const historyStack = []
   const redoStack = []
   const selectionSnapshots = []
+  const notes = []
   let customMarkerCount = 0
+  let labelsVisible = true
 
   function clearSelection() {
     dom.zoneNameEl.textContent = 'No zone selected'
@@ -79,6 +81,7 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     const labelAnchor = document.createElement('div')
     labelAnchor.className = `marker-label marker-label-${point.severity.toLowerCase()}`
     labelAnchor.textContent = point.label
+    labelAnchor.classList.toggle('is-label-muted', !labelsVisible)
     labelLayerEl.appendChild(labelAnchor)
 
     modelRoot.addChild(marker)
@@ -107,6 +110,11 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     dom.severityLevelEl.textContent = marker.severity
     dom.inspectionTimestampEl.textContent = formatInspectionTimestamp()
     dom.recommendationTextEl.textContent = marker.recommendation
+  }
+
+  function updateMarkerVisibility() {
+    updateLabelsVisibility()
+    renderAppState()
   }
 
   function updateMultiSelection(selectedMarkers) {
@@ -213,6 +221,115 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     setActionStatus('Marker added')
   }
 
+  function createNoteMarkerAt(position, viewSnapshot, noteText = '') {
+    customMarkerCount += 1
+    const note = noteText.trim() || 'Inspection note saved for this view.'
+    const point = {
+      id: `note-${Date.now()}`,
+      label: `Note ${customMarkerCount} - Warning`,
+      position: [position.x, position.y, position.z],
+      severity: 'Warning',
+      riskScore: 45,
+      recommendation: note,
+      viewSnapshot,
+    }
+    const marker = addWeakPoint(point)
+    notes.unshift({
+      id: point.id,
+      createdAt: new Date().toISOString(),
+      label: point.label,
+      note,
+      viewSnapshot,
+    })
+    historyStack.push({ type: 'create-marker', point, marker })
+    redoStack.length = 0
+    updateSelection(marker)
+    setActionStatus('Note marker saved')
+    return marker
+  }
+
+  function setSeverityFilter(severity) {
+    markers.forEach((marker) => {
+      marker.enabled = !severity || marker.severity === severity
+    })
+    clearSelection()
+    updateMarkerVisibility()
+    setActionStatus(severity ? `${severity} markers shown` : 'All severities shown')
+  }
+
+  function selectBySeverity(severity) {
+    const selectedMarkers = markers.filter((marker) => marker.enabled && marker.severity === severity)
+    updateMultiSelection(selectedMarkers)
+  }
+
+  function selectVisibleMarkers() {
+    updateMultiSelection(markers.filter((marker) => marker.enabled))
+  }
+
+  function isolateSelection() {
+    if (!appState.selectedMarkers.length) {
+      setActionStatus('Select markers first')
+      return
+    }
+
+    const selectedSet = new Set(appState.selectedMarkers)
+    markers.forEach((marker) => {
+      marker.enabled = selectedSet.has(marker)
+    })
+    updateMarkerVisibility()
+    setActionStatus(`${selectedSet.size} selected markers isolated`)
+  }
+
+  function hideSelectedMarkers() {
+    if (!appState.selectedMarkers.length) {
+      setActionStatus('Select markers first')
+      return
+    }
+
+    appState.selectedMarkers.forEach((marker) => {
+      marker.enabled = false
+    })
+    clearSelection()
+    updateMarkerVisibility()
+    setActionStatus('Selected markers hidden')
+  }
+
+  function revealAllMarkers() {
+    markers.forEach((marker) => {
+      marker.enabled = true
+    })
+    updateMarkerVisibility()
+    setActionStatus('All markers revealed')
+  }
+
+  function setLabelsVisible(visible) {
+    labelsVisible = visible
+    labelAnchors.forEach((anchor) => {
+      anchor.classList.toggle('is-label-muted', !visible)
+    })
+    setActionStatus(visible ? 'Labels visible' : 'Labels muted')
+  }
+
+  function getReportData() {
+    return {
+      generatedAt: new Date().toISOString(),
+      markerCount: markers.length,
+      visibleMarkerCount: markers.filter((marker) => marker.enabled).length,
+      selectedMarkerIds: appState.selectedMarkers.map((marker) => marker.riskId),
+      markers: markers.map((marker) => ({
+        id: marker.riskId,
+        label: marker.label,
+        severity: marker.severity,
+        riskScore: marker.riskScore,
+        enabled: marker.enabled,
+        position: [marker.getPosition().x, marker.getPosition().y, marker.getPosition().z],
+        recommendation: marker.recommendation,
+      })),
+      notes,
+      savedSelections: selectionSnapshots,
+    }
+  }
+
   function undoLastAction() {
     const action = historyStack.pop()
     if (!action) {
@@ -253,6 +370,7 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     historyStack.length = 0
     redoStack.length = 0
     selectionSnapshots.length = 0
+    notes.length = 0
     clearMeasurements?.()
     clearSelection()
   }
@@ -275,6 +393,7 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     markers,
     labelAnchors,
     selectionSnapshots,
+    notes,
     addWeakPoint,
     seedInspectionMarkers,
     updateSelection,
@@ -282,6 +401,15 @@ export function createMarkerManager({ pc, modelRoot, labelLayerEl, dom, appState
     saveSelectionSnapshot,
     findClosestMarker,
     createCustomMarkerAt,
+    createNoteMarkerAt,
+    setSeverityFilter,
+    selectBySeverity,
+    selectVisibleMarkers,
+    isolateSelection,
+    hideSelectedMarkers,
+    revealAllMarkers,
+    setLabelsVisible,
+    getReportData,
     clearMarkerLabels,
     clearSelection,
     updateLabelsVisibility,

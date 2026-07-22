@@ -117,11 +117,89 @@
   font-size: 0.92rem;
 }
 
-.command-panel p {
-  margin: 10px 0 0;
+.command-panel-body {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.panel-control-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.panel-command {
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: left;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.panel-command:hover {
+  border-color: rgba(77, 163, 255, 0.45);
+  background: rgba(77, 163, 255, 0.12);
+}
+
+.panel-command.primary {
+  border-color: rgba(77, 163, 255, 0.5);
+  color: #bfdbfe;
+}
+
+.panel-command.danger {
+  border-color: rgba(239, 68, 68, 0.42);
+  color: #fecaca;
+}
+
+.panel-command.warning {
+  border-color: rgba(245, 158, 11, 0.42);
+  color: #fde68a;
+}
+
+.panel-command.info {
+  border-color: rgba(77, 163, 255, 0.42);
+  color: #bfdbfe;
+}
+
+.panel-note {
+  margin: 0;
   color: var(--text-muted);
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   line-height: 1.5;
+}
+
+.shortcut-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.shortcut-grid span {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.shortcut-grid strong {
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.panel-textarea {
+  min-height: 96px;
+  padding: 10px 12px;
+  resize: vertical;
+  line-height: 1.4;
 }
 
 .command-close {
@@ -152,4 +230,3 @@
   background: var(--accent-blue);
   box-shadow: 0 0 16px rgba(77, 163, 255, 0.65);
 }
-

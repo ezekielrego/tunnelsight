@@ -19,6 +19,7 @@ export function createPlayCanvasApp(canvas) {
   const camera = new pc.Entity('camera')
   camera.addComponent('camera', {
     clearColor: new pc.Color(0.03, 0.07, 0.12),
+    fov: 58,
   })
   camera.setPosition(0, 2, 8)
   app.root.addChild(camera)
@@ -35,5 +36,5 @@ export function createPlayCanvasApp(canvas) {
   const modelRoot = new pc.Entity('modelRoot')
   app.root.addChild(modelRoot)
 
-  return { pc, app, camera, modelRoot }
+  return { pc, app, camera, light, modelRoot }
 }

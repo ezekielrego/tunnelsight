@@ -46,7 +46,7 @@ export const SEVERITY_COLORS = {
   Warning: new pc.Color(0.35, 0.7, 1),
 }
 
-export const ROTATE_CAMERA_MODES = new Set(['inspect', 'orbit', 'rotate', 'scene'])
+export const ROTATE_CAMERA_MODES = new Set(['inspect', 'orbit', 'rotate', 'scene', 'walk'])
 
 export const MODE_LABELS = {
   inspect: 'Inspect Mode',
@@ -62,6 +62,7 @@ export const MODE_LABELS = {
   boxSelect: 'Box Select Mode',
   lasso: 'Lasso Mode',
   rotate: 'Rotate Mode',
+  walk: 'Walk-through Mode',
 }
 
 export const MODEL_LOAD_LABELS = {

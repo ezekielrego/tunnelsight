@@ -18,6 +18,7 @@ export function createOrbitCameraControls({ app, camera }) {
   let pointerDragged = false
   let lastX = 0
   let lastY = 0
+  const pressedKeys = new Set()
 
   const orbitTarget = new pc.Vec3(0, 1, 0)
   const cameraMove = {
@@ -55,9 +56,10 @@ export function createOrbitCameraControls({ app, camera }) {
       orbitTarget.x -= dx * 0.015
       orbitTarget.y += dy * 0.015
     } else {
-      yaw -= dx * 0.2
-      pitch -= dy * 0.2
-      pitch = Math.max(-80, Math.min(80, pitch))
+      const lookSpeed = mode === 'walk' ? 0.14 : 0.2
+      yaw -= dx * lookSpeed
+      pitch -= dy * lookSpeed
+      pitch = Math.max(mode === 'walk' ? -45 : -80, Math.min(mode === 'walk' ? 45 : 80, pitch))
     }
     lastX = event.clientX
     lastY = event.clientY
@@ -75,6 +77,19 @@ export function createOrbitCameraControls({ app, camera }) {
     cameraMove.endTarget.copy(target)
     cameraMove.startDistance = distance
     cameraMove.endDistance = nextDistance
+  }
+
+  function setView({ target, nextDistance = distance, nextYaw = yaw, nextPitch = pitch, animate = true }) {
+    yaw = nextYaw
+    pitch = nextPitch
+
+    if (animate) {
+      animateTo(target, nextDistance)
+      return
+    }
+
+    orbitTarget.copy(target)
+    distance = nextDistance
   }
 
   function resetAngles() {
@@ -110,7 +125,41 @@ export function createOrbitCameraControls({ app, camera }) {
       && pitchDelta <= 35
   }
 
-  function update(dt) {
+  function handleKeyDown(event) {
+    pressedKeys.add(event.key.toLowerCase())
+  }
+
+  function handleKeyUp(event) {
+    pressedKeys.delete(event.key.toLowerCase())
+  }
+
+  function updateWalkMovement(dt) {
+    const forwardInput = Number(pressedKeys.has('w')) - Number(pressedKeys.has('s'))
+    const sideInput = Number(pressedKeys.has('d')) - Number(pressedKeys.has('a'))
+    const verticalInput = Number(pressedKeys.has('e')) - Number(pressedKeys.has('q'))
+
+    if (!forwardInput && !sideInput && !verticalInput) {
+      return
+    }
+
+    const radYaw = (yaw * Math.PI) / 180
+    const forward = new pc.Vec3(Math.sin(radYaw), 0, Math.cos(radYaw))
+    const right = new pc.Vec3(Math.cos(radYaw), 0, -Math.sin(radYaw))
+    const movement = forward.mulScalar(forwardInput).add(right.mulScalar(sideInput))
+    movement.y += verticalInput
+
+    if (movement.lengthSq() > 0) {
+      movement.normalize().mulScalar(4.2 * dt)
+      orbitTarget.add(movement)
+    }
+  }
+
+  function update(dt, mode = 'inspect') {
+    if (mode === 'walk') {
+      distance += (2.6 - distance) * Math.min(1, dt * 3)
+      updateWalkMovement(dt)
+    }
+
     if (cameraMove.active) {
       cameraMove.elapsed += dt
       const progress = Math.min(cameraMove.elapsed / cameraMove.duration, 1)
@@ -142,8 +191,11 @@ export function createOrbitCameraControls({ app, camera }) {
     updateDrag,
     zoom,
     animateTo,
+    setView,
     resetAngles,
     update,
+    handleKeyDown,
+    handleKeyUp,
     wasPointerDragged: () => pointerDragged,
     setPointerDragged: (value) => {
       pointerDragged = value

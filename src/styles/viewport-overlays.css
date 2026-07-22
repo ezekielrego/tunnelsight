@@ -37,12 +37,22 @@
   box-shadow: 0 0 0 1px rgba(77, 163, 255, 0.18), 0 16px 42px rgba(77, 163, 255, 0.18);
 }
 
+.marker-label.is-label-muted {
+  opacity: 0.12;
+}
+
 .selection-box {
   position: absolute;
   border: 1px solid rgba(77, 163, 255, 0.92);
   background: rgba(77, 163, 255, 0.16);
   box-shadow: 0 0 0 1px rgba(77, 163, 255, 0.24);
   pointer-events: none;
+}
+
+.selection-box-lasso {
+  border-color: rgba(245, 158, 11, 0.9);
+  background: rgba(245, 158, 11, 0.18);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.24);
 }
 
 .measurement-label {

@@ -60,7 +60,11 @@ export function createViewState({ dom, getMarkers }) {
       dom.commandPanelEl.hidden = !panel
       if (panel) {
         dom.commandPanelTitleEl.textContent = panel.title
-        dom.commandPanelTextEl.textContent = panel.text
+        if (panel.html) {
+          dom.commandPanelTextEl.innerHTML = panel.html
+        } else {
+          dom.commandPanelTextEl.textContent = panel.text
+        }
       }
     }
 
@@ -96,11 +100,13 @@ export function createViewState({ dom, getMarkers }) {
 
     const modeHints = {
       marker: 'Click scene to add marker',
+      annotate: 'Click scene to place a note marker',
       measure: 'Click first measurement point',
       boxSelect: 'Drag to box select markers',
       lasso: 'Drag to select markers',
       select: 'Click marker to select',
       pan: 'Drag to pan view',
+      walk: 'W A S D moves through the tunnel',
     }
 
     setAppState({
